@@ -7,13 +7,6 @@ const {
   validate,
 } = require('../utils');
 
-const FILE_PATH = {
-  pagesPath: './pages', //页面存放的路径 TODO: 处理首字母大小写
-  componentsPath: './components', //组件存放的路径，TODO: 处理首字母大小写
-};
-
-const ACTION_NAME = 'page';
-
 function copyTemplate(from, to, fileName) {
   from = path.join(__dirname, '../templates', from);
   const rawContent = fs.readFileSync(from, 'utf-8');
@@ -23,20 +16,31 @@ function copyTemplate(from, to, fileName) {
   fs.writeFileSync(to, finalContent);
 }
 
-function generatePage(fileName) {
+/**
+ *
+ *
+ * @param {*} templateFileName componentBasic | componentBusiness | page
+ * @param {*} fileName
+ * @param {*} filePath './pages' | './components'
+ */
+function createFile(templateFileName, filePath, fileName) {
   fileName = toUpperCaseFirstWord(fileName);
-  fs.mkdirSync(FILE_PATH.pagesPath + `/${fileName}`);
+  fs.mkdirSync(filePath + `/${fileName}`);
   copyTemplate(
-    ACTION_NAME,
-    FILE_PATH.pagesPath + `/${fileName}/${fileName}.tsx`,
+    templateFileName,
+    filePath + `/${fileName}/${fileName}.tsx`,
     fileName
   );
   copyTemplate(
-    ACTION_NAME + 'Less',
-    FILE_PATH.pagesPath + `/${fileName}/${fileName}.less`,
+    templateFileName + 'Less',
+    filePath + `/${fileName}/${fileName}.less`,
     fileName
   );
-  fs.mkdirSync(FILE_PATH.pagesPath + `/${fileName}` + '/components');
+}
+
+function generatePage(fileName) {
+  createFile('page', './pages', fileName);
+  fs.mkdirSync('./pages' + `/${fileName}` + '/components');
 }
 
 function generateComponent(fileName, componentOptions) {
@@ -49,36 +53,11 @@ function generateComponent(fileName, componentOptions) {
 }
 
 function generateComponentBasic(fileName) {
-  fileName = toUpperCaseFirstWord(fileName);
-  fs.mkdirSync(FILE_PATH.componentsPath + '/Basic' + `/${fileName}`);
-
-  copyTemplate(
-    `componentBasic`,
-    FILE_PATH.componentsPath + '/Basic' + `/${fileName}/${fileName}.tsx`,
-    fileName
-  );
-
-  copyTemplate(
-    'componentBasicLess',
-    FILE_PATH.componentsPath + '/Basic' + `/${fileName}/${fileName}.less`,
-    fileName
-  );
+  createFile('componentBasic', './components/Basic', fileName);
 }
 
 function generateComponentBusiness(fileName) {
-  fileName = toUpperCaseFirstWord(fileName);
-  fs.mkdirSync(FILE_PATH.componentsPath + '/Business' + `/${fileName}`);
-  copyTemplate(
-    `componentBusiness`,
-    FILE_PATH.componentsPath + '/Business' + `/${fileName}/${fileName}.tsx`,
-    fileName
-  );
-
-  copyTemplate(
-    'componentBusinessLess',
-    FILE_PATH.componentsPath + '/Business' + `/${fileName}/${fileName}.less`,
-    fileName
-  );
+  createFile('componentBusiness', './components/Business', fileName);
 }
 
 function generate(options, actionName, fileName) {
