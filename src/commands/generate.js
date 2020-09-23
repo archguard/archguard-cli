@@ -92,16 +92,19 @@ function generate(options, actionName, fileName) {
       message: 'pages下文件必须以首字母大写+驼峰命名！',
     },
   ])(() => {
-    if (actionName === ACTION_NAME) {
-      //TODO:检查文件名是否重复
-      generatePage(fileName);
-    }
-    if (actionName === 'component' || actionName === 'c') {
-      // ag g component basic / business
-      generateComponent(fileName, options);
-    } else {
-      console.log(`暂不支持 ${actionName} 命令`);
-      return;
+    switch (actionName) {
+      case 'page':
+      case 'p':
+        generatePage(fileName);
+        break;
+
+      case 'component':
+      case 'c':
+        generateComponent(fileName, options);
+        break;
+
+      default:
+        break;
     }
   });
 }
