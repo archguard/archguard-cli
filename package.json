@@ -1,0 +1,27 @@
+{
+  "name": "arch-guard-cli",
+  "version": "1.0.3",
+  "description": "archGuard架构守护项目前端脚手架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ag": "./bin/www"
+  },
+  "keywords": [],
+  "author": "qinjialei",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "commander": "^6.1.0",
+    "handlebars": "^4.7.6",
+    "metalsmith": "^2.3.0",
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.9.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0"
+  }
+}

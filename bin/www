@@ -1,0 +1,4 @@
+#! /usr/bin/env node
+// 注意 是 usr 而不是 user
+
+require('../src/main.js');
