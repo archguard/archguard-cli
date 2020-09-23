@@ -94,9 +94,12 @@ function generate(options, actionName, fileName) {
     //TODO:检查文件名是否重复
     generatePage(fileName);
   }
-  if (actionName === 'component' || 'c') {
+  if (actionName === 'component' || actionName === 'c') {
     // ag g component basic / business
     generateComponent(fileName, options);
+  } else {
+    console.log(`暂不支持 ${actionName} 命令`);
+    return;
   }
 }
 
