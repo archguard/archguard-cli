@@ -1,7 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const { toUpperCaseFirstWord, generateFileByTemplate } = require('../utils');
+const {
+  toUpperCaseFirstWord,
+  generateFileByTemplate,
+  validate,
+} = require('../utils');
 
 const FILE_PATH = {
   pagesPath: './pages', //页面存放的路径 TODO: 处理首字母大小写
@@ -78,25 +82,28 @@ function generateComponentBusiness(fileName) {
 }
 
 function generate(options, actionName, fileName) {
-  if (!process.cwd().endsWith('/src')) {
-    console.error('请在项目的 src 目录下运行！');
-    return;
-  }
-  if (actionName === ACTION_NAME) {
-    if (fileName.includes('-')) {
-      console.error('pages下文件必须以首字母大写+驼峰命名！');
+  validate([
+    {
+      fn: () => !process.cwd().endsWith('/src'),
+      message: '请在项目的 src 目录下运行！',
+    },
+    {
+      fn: () => fileName.includes('-'),
+      message: 'pages下文件必须以首字母大写+驼峰命名！',
+    },
+  ])(() => {
+    if (actionName === ACTION_NAME) {
+      //TODO:检查文件名是否重复
+      generatePage(fileName);
+    }
+    if (actionName === 'component' || actionName === 'c') {
+      // ag g component basic / business
+      generateComponent(fileName, options);
+    } else {
+      console.log(`暂不支持 ${actionName} 命令`);
       return;
     }
-    //TODO:检查文件名是否重复
-    generatePage(fileName);
-  }
-  if (actionName === 'component' || actionName === 'c') {
-    // ag g component basic / business
-    generateComponent(fileName, options);
-  } else {
-    console.log(`暂不支持 ${actionName} 命令`);
-    return;
-  }
+  });
 }
 
 function initCommandGenerate(program) {

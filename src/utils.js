@@ -21,4 +21,14 @@ module.exports = {
       }
     });
   },
+  validate(conditions) {
+    let res = true;
+    for (const item of conditions) {
+      if (item.fn()) {
+        res = false;
+        console.error(item.message);
+      }
+    }
+    return (callback) => res && callback();
+  },
 };
