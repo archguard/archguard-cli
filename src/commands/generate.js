@@ -16,11 +16,7 @@ function copyTemplate(from, to, fileName) {
   const finalContent = generateFileByTemplate(rawContent, {
     fileName,
   });
-  write(to, finalContent);
-}
-
-function write(path, str, mode) {
-  fs.writeFileSync(path, str);
+  fs.writeFileSync(to, finalContent);
 }
 
 function generatePage(fileName) {
