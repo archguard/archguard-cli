@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const menuConfigHandler = require('../handlers/menuConfigHandler');
 
 const {
   toUpperCaseFirstWord,
@@ -39,8 +40,9 @@ function createFile(templateFileName, filePath, fileName) {
 }
 
 function generatePage(fileName) {
-  createFile('page', './pages', fileName);
-  fs.mkdirSync('./pages' + `/${fileName}` + '/components');
+  // createFile('page', './pages', fileName);
+  // fs.mkdirSync('./pages' + `/${fileName}` + '/components');
+  menuConfigHandler(fileName);
 }
 
 function generateComponent(fileName, componentOptions) {

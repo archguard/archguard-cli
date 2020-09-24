@@ -19,6 +19,89 @@ const { getSplitString } = require('../utils');
 //   ],
 // },
 
+// 由于遗留代码命名没统一，导致以下情况，父菜单 key 为 systemEvaluation ,而子菜单的 key 的父级前缀 为 /system-evaluation
+// 所以建立 menuKeyMap 做一个映射关系
+// {
+//   key: "systemEvaluation",
+//   text: "架构评估",
+//   icon: <FileTextOutlined />,
+//   children: [
+//     { key: "/system-evaluation/Demo", text: "测试" },
+//   ],
+// },
+
+const menuKeyMap = {
+  systemEvaluation: 'system-evaluation',
+  analysisTools: 'analysis',
+};
+
+function createMemberExpression(key, value) {
+  return t.objectExpression([
+    {
+      key: t.identifier(key),
+      type: 'ObjectProperty',
+      value: t.StringLiteral(value),
+    },
+  ]);
+}
+
+function handleMenu(code, parentKey, childKey) {
+  const ast = parser.parse(code, {
+    sourceType: 'module',
+    plugins: ['jsx'],
+  });
+
+  traverse(ast, {
+    ObjectExpression(path) {
+      path.node.properties.forEach((item) => {
+        //TODO: 处理没有找到 key 的情况，给予提示
+        if (item.value.value === parentKey) {
+          path.traverse({
+            ObjectProperty(path2) {
+              //找到 children属性
+              if (path2.node.key.name === 'children') {
+                path2.node.value.elements.push(
+                  createMemberExpression(
+                    'key',
+                    `/${menuKeyMap[parentKey]}/${childKey}`
+                  )
+                );
+              }
+            },
+          });
+        }
+      });
+    },
+  });
+
+  return generator(
+    ast,
+    {
+      // retainLines: true,
+      // minified: false,
+    },
+    code
+  );
+}
+
+function getMenuConfigFile() {
+  //默认都在 src 目录下执行
+  return fs.readFileSync(
+    path.join(process.cwd(), './layouts/base/config.tsx'),
+    'utf-8'
+  );
+}
+
+function rewrite(newCode) {
+  fs.writeFileSync(
+    path.join(process.cwd(), './layouts/base/config2.tsx'),
+    newCode,
+    {
+      encoding: 'utf-8',
+    }
+  );
+}
+
 /**
  *
  *
@@ -28,8 +111,14 @@ const { getSplitString } = require('../utils');
 function menuConfigHandler(menuPath, menuText) {
   if (menuPath.includes('/')) {
     const { parent, child } = getSplitString(menuPath);
-    console.log('child: ', child);
-    console.log('parent: ', parent);
+    if (!child) {
+      console.error('分隔符后面不能为空字符！');
+      return;
+    }
+    const menuConfigFile = getMenuConfigFile();
+
+    const codeResult = handleMenu(menuConfigFile, parent, child);
+    rewrite(codeResult.code);
   } else {
     console.log('menuConfigHandler 没有指定父节点');
   }
