@@ -1,8 +1,8 @@
 const parser = require('@babel/parser');
+const traverse = require('@babel/traverse').default;
+console.log('traverse: ', traverse);
 const fs = require('fs');
 const path = require('path');
-
-console.log('parser.parse 的值是：', parser.parse);
 
 function initCommandTest(program) {
   program
@@ -15,10 +15,19 @@ function initCommandTest(program) {
           const code = data.toString();
           const ast = parser.parse(code, {
             sourceType: 'module',
-            plugins: ['typescript', 'jsx'],
+            plugins: ['jsx'],
           });
-          console.log('ast: ', ast);
-          // console.log('ast2: ', ast);
+
+          traverse(ast, {
+            ExportNamedDeclaration(path) {
+              // console.log('path: ', path);
+            },
+            Identifier(node) {
+              if (node.name === 'key') {
+                console.log('node: ', node);
+              }
+            },
+          });
         }
       );
       // travel();
