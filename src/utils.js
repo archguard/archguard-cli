@@ -2,8 +2,6 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 
-const fileObject = {};
-
 function travel(dir, callback) {
   fs.readdirSync(dir, { withFileTypes: true }).forEach(function (file) {
     console.log('file: ', file);
