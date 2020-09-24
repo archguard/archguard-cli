@@ -2,23 +2,17 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 
-function travel(dir, callback) {
-  fs.readdirSync(dir, { withFileTypes: true }).forEach(function (file) {
-    console.log('file: ', file);
-    const pathname = path.join(dir, file);
-    if (fs.statSync(pathname).isDirectory()) {
-      travel(pathname, callback);
-    } else {
-      callback(pathname);
-    }
-  });
+function getSplitString(str, flag = '/') {
+  const parent = str.slice(0, str.indexOf(flag));
+  const child = str.slice(str.indexOf(flag) + 1);
+  return { parent, child };
 }
 
 function toUpperCaseFirstWord(str) {
   return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-function generateFileByTemplate(params) {
+function generateFileByTemplate(template, data) {
   const content = Handlebars.compile(template)(data);
   return content;
 }
@@ -35,7 +29,7 @@ function validate(conditions) {
 }
 
 module.exports = {
-  travel,
+  getSplitString,
   toUpperCaseFirstWord,
   generateFileByTemplate,
   validate,
