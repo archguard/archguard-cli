@@ -1,6 +1,5 @@
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
-console.log('traverse: ', traverse);
 const fs = require('fs');
 const path = require('path');
 
