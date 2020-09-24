@@ -42,6 +42,11 @@ function createMemberExpression(key, value) {
       type: 'ObjectProperty',
       value: t.StringLiteral(value),
     },
+    {
+      key: t.identifier('text'),
+      type: 'ObjectProperty',
+      value: t.StringLiteral('text'),
+    },
   ]);
 }
 
