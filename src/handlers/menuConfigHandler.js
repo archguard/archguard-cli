@@ -4,7 +4,7 @@ const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const fs = require('fs');
 const path = require('path');
-const { getSplitString } = require('../utils');
+const { getSplitString, toUpperCaseFirstWord } = require('../utils');
 
 // 使用 ag g page 生成页面组件时，第四个输入为 ’ foo/bar ‘,加入分隔符’/‘，
 // 则被认为 在 key ='foo'的路由下面的 children 数组内加入菜单配置 ，自动配置好 menuList 菜单配置
@@ -110,11 +110,12 @@ function rewrite(newCode) {
  */
 function menuConfigHandler(menuPath, menuText) {
   if (menuPath.includes('/')) {
-    const { parent, child } = getSplitString(menuPath);
+    let { parent, child } = getSplitString(menuPath);
     if (!child) {
       console.error('分隔符后面不能为空字符！');
       return;
     }
+    child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
 
     const codeResult = handleMenu(menuConfigFile, parent, child);
