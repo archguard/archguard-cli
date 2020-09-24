@@ -110,6 +110,7 @@ function rewrite(newCode) {
  * @param {*} menuText 菜单显示文字
  */
 function menuConfigHandler(menuPath, menuText) {
+  console.log('menuPath: ', menuPath);
   if (menuPath.includes('/')) {
     let { parent, child } = getSplitString(menuPath);
     if (!child) {

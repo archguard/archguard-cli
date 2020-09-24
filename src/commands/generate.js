@@ -6,6 +6,7 @@ const {
   toUpperCaseFirstWord,
   generateFileByTemplate,
   validate,
+  getSplitString,
 } = require('../utils');
 
 function copyTemplate(from, to, fileName) {
@@ -40,8 +41,9 @@ function createFile(templateFileName, filePath, fileName) {
 }
 
 function generatePage(fileName) {
-  // createFile('page', './pages', fileName);
-  // fs.mkdirSync('./pages' + `/${fileName}` + '/components');
+  const { parent, child } = getSplitString(fileName);
+  createFile('page', './pages', child);
+  fs.mkdirSync('./pages' + `/${child}` + '/components');
   menuConfigHandler(fileName);
 }
 
