@@ -93,12 +93,13 @@ function getMenuConfigFile() {
 }
 
 function rewrite(newCode) {
-  fs.writeFileSync(
-    path.join(process.cwd(), './layouts/base/config2.tsx'),
+  fs.writeFile(
+    path.join(process.cwd(), './layouts/base/config.tsx'),
     newCode,
     {
       encoding: 'utf-8',
-    }
+    },
+    () => {}
   );
 }
 
