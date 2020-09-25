@@ -42,9 +42,9 @@ function createFile(templateFileName, filePath, fileName) {
 
 function generatePage(fileName) {
   const { parent, child } = getSplitString(fileName);
-  createFile('page', './pages', child);
-  fs.mkdirSync('./pages' + `/${child}` + '/components');
-  menuConfigHandler(fileName);
+  createFile('page', `./pages/${parent}`, child);
+  fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
+  // menuConfigHandler(fileName);
 }
 
 function generateComponent(fileName, componentOptions) {
@@ -73,6 +73,11 @@ function generate(options, actionName, fileName) {
     {
       fn: () => fileName.includes('-'),
       message: 'pages下文件必须以首字母大写+驼峰命名！',
+    },
+    {
+      fn: () => !fileName.includes('/'),
+      message:
+        '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory',
     },
   ])(() => {
     switch (actionName) {
