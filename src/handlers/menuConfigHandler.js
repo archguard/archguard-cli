@@ -6,35 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const { getSplitString, toUpperCaseFirstWord } = require('../utils');
 
-// 使用 ag g page 生成页面组件时，第四个输入为 ’ foo/bar ‘,加入分隔符’/‘，
-// 则被认为 在 key ='foo'的路由下面的 children 数组内加入菜单配置 ，自动配置好 menuList 菜单配置
-// 例如 ag g page systemEvaluation/demo 测试 ，则会在 src/layouts/base/config.tsx 文件下产生如下菜单配置：
-
-// {
-//   key: "systemEvaluation",
-//   text: "架构评估",
-//   icon: <FileTextOutlined />,
-//   children: [
-//     { key: "/system-evaluation/Demo", text: "测试" },
-//   ],
-// },
-
-// 由于遗留代码命名没统一，导致以下情况，父菜单 key 为 systemEvaluation ,而子菜单的 key 的父级前缀 为 /system-evaluation
-// 所以建立 menuKeyMap 做一个映射关系
-// {
-//   key: "systemEvaluation",
-//   text: "架构评估",
-//   icon: <FileTextOutlined />,
-//   children: [
-//     { key: "/system-evaluation/Demo", text: "测试" },
-//   ],
-// },
-
-const menuKeyMap = {
-  systemEvaluation: 'system-evaluation',
-  analysisTools: 'analysis',
-};
-
 function createMemberExpression(parentKey, childKey) {
   return t.objectExpression([
     {
@@ -45,7 +16,8 @@ function createMemberExpression(parentKey, childKey) {
     {
       key: t.identifier('text'),
       type: 'ObjectProperty',
-      value: t.StringLiteral(`/${parentKey}/${childKey}`),
+      value: t.StringLiteral(`中文`),
+      // value: t.StringLiteral(`/${parentKey}/${childKey}`),
     },
   ]);
 }
