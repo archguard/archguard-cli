@@ -35,17 +35,17 @@ const menuKeyMap = {
   analysisTools: 'analysis',
 };
 
-function createMemberExpression(key, value) {
+function createMemberExpression(parentKey, childKey) {
   return t.objectExpression([
     {
-      key: t.identifier(key),
+      key: t.identifier('key'),
       type: 'ObjectProperty',
-      value: t.StringLiteral(value),
+      value: t.StringLiteral(`/${parentKey}/${childKey}`),
     },
     {
       key: t.identifier('text'),
       type: 'ObjectProperty',
-      value: t.StringLiteral('text'),
+      value: t.StringLiteral(`/${parentKey}/${childKey}`),
     },
   ]);
 }
@@ -66,10 +66,7 @@ function handleMenu(code, parentKey, childKey) {
               //找到 children属性
               if (path2.node.key.name === 'children') {
                 path2.node.value.elements.push(
-                  createMemberExpression(
-                    'key',
-                    `/${menuKeyMap[parentKey]}/${childKey}`
-                  )
+                  createMemberExpression(parentKey, childKey)
                 );
               }
             },
