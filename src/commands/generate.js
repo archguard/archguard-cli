@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const menuConfigHandler = require('../handlers/menuConfigHandler');
+const routerHandler = require('../handlers/routerHandler');
 
 const {
   toUpperCaseFirstWord,
@@ -44,7 +45,8 @@ function generatePage(fileName) {
   const { parent, child } = getSplitString(fileName);
   createFile('page', `./pages/${parent}`, child);
   fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
-  // menuConfigHandler(fileName);
+  menuConfigHandler(fileName);
+  routerHandler(fileName);
 }
 
 function generateComponent(fileName, componentOptions) {
