@@ -127,7 +127,8 @@ function menuConfigHandler(menuPath, menuText) {
 
     const codeResult = handleMenu(menuConfigFile, parent, child);
     rewrite(codeResult.code);
-  } else {//TODO: 处理顶级菜单
+  } else {
+    //TODO: 处理顶级菜单
     console.log('menuConfigHandler 没有指定父节点');
   }
 }
