@@ -58,7 +58,8 @@ export default defineConfig({
         { path: "quality-gate-profile", component: "@/pages/quality-gate-profile" },
         { path: "metric/:type?", component: "@/pages/metrics" },
         {
-          "abc2": "中文"
+          path: "xxx",
+          component: "中文path"
         }
       ],
     },
