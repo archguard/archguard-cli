@@ -9,6 +9,7 @@ exports.routerVisitor = (routerPath = '', componentPath = '') => {
           if (item2.value.value === '/:systemId') {
             recast.visit(item, {
               visitArrayExpression(path) {
+                //TODO: 若此处 path 有注释，会导致 插入的节点格式化与源文件不一致
                 path.node.elements.push(
                   objectExpression([
                     {
@@ -41,15 +42,12 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
   }
   return {
     visitArrayExpression(path) {
-      // console.log('parentKey 的值是：', parentKey);
       path.node.elements.forEach((item) => {
         item.properties.forEach((item2) => {
-          // console.log('item2.key.name 的值是：', item2.key.name);
-          // console.log('item2.value.value 的值是：', item2.value.value);
           if (item2.key.name === 'key' && item2.value.value === parentKey) {
-            // console.log('item 的值是：', item);
             recast.visit(item, {
               visitArrayExpression(path2) {
+                //TODO: 若此处 path2 有注释，会导致 插入的节点格式化与源文件不一致
                 path2.value.elements.push(
                   objectExpression([
                     {
@@ -68,15 +66,6 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
               },
             });
           }
-          // if (item2.value.value === parentKey) {
-          //   recast.visit(item, {
-          //     visitArrayExpression(path2) {
-          //       console.log('path2: ', path2);
-          //     },
-          //   });
-          // }
-          // console.log('item2: ', item2.value);
-          // if (item2.value.value === '/:systemId') {}
         });
       });
       return false;
