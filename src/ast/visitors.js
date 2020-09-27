@@ -18,7 +18,7 @@ exports.routerVisitor = (routerPath = '', componentPath = '') => {
                       type: 'ObjectProperty',
                     },
                     {
-                    // { path: "xxx/xxx2", component: "@/pages/xxx/xxx2/xxx2" },
+                      // { path: "xxx/xxx2", component: "@/pages/xxx/xxx2/xxx2" },
                       key: identifier('component'),
                       value: stringLiteral(componentPath),
                       type: 'ObjectProperty',
@@ -53,7 +53,7 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
                   objectExpression([
                     {
                       key: identifier('key'),
-                      value: stringLiteral('/' + key),
+                      value: stringLiteral(`/${parentKey}/${key}`),
                       type: 'ObjectProperty',
                     },
                     {

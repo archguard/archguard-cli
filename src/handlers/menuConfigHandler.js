@@ -5,19 +5,19 @@ const { identifier, stringLiteral, objectExpression } = recast.types.builders;
 const { menuVisitor } = require('../ast/visitors');
 const { getSplitString, toUpperCaseFirstWord } = require('../utils');
 
-function handleMenu(code, menuPath, menuName) {
-  let { parent, child } = getSplitString(menuPath);
-  const menuAst = recast.parse(code);
-  recast.visit(menuAst, menuVisitor(child, menuName, parent));
-  return recast.print(menuAst).code;
-}
-
 function getMenuConfigFile() {
   //默认都在 src 目录下执行
   return fs.readFileSync(
     path.join(process.cwd(), './layouts/base/config.tsx'),
     'utf-8'
   );
+}
+
+function handleMenu(code, menuPath, menuName) {
+  let { parent, child } = getSplitString(menuPath);
+  const menuAst = recast.parse(code);
+  recast.visit(menuAst, menuVisitor(child, menuName, parent));
+  return recast.print(menuAst).code;
 }
 
 /**
