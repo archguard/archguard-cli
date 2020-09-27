@@ -5,6 +5,16 @@ arch-guard 前端项目脚手架
 - 保持代码规范性
 - 减少手动新建文件操作，快速生成符合项目风格的代码，提高开发体验
 
+## TODO
+ - [x] 自动生成 page 文件模板
+ - [x] 自动生成 组件 文件模板
+ - [x] 自动生成 路由配置
+ - [x] 自动生成 菜单配置
+ - [ ] 打包
+ - [ ] 插件架构
+ - [ ] 测试
+ - [ ] 搭建流水线
+
 ## 使用
 ```bash
 npm install arch-guard-cli -g
@@ -23,5 +33,4 @@ npm install arch-guard-cli -g
 - `--basic => -ba`
 - `--business => -bu`
  
-
 
