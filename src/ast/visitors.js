@@ -9,7 +9,7 @@ exports.routerVisitor = (routerPath = '', componentPath = '') => {
           if (item2.value.value === '/:systemId') {
             recast.visit(item, {
               visitArrayExpression(path) {
-                //TODO: 若此处 path 有注释，会导致 插入的节点格式化与源文件不一致
+                //TODO: 若此处 path上一行或者下一行代码有注释，会导致 插入的节点格式化与源文件不一致
                 path.node.elements.push(
                   objectExpression([
                     {
@@ -48,7 +48,7 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
           if (item2.key.name === 'key' && item2.value.value === parentKey) {
             recast.visit(item, {
               visitArrayExpression(path2) {
-                //TODO: 若此处 path2 有注释，会导致 插入的节点格式化与源文件不一致
+                //TODO: 若此处 path2 上一行或者下一行代码有注释，会导致 插入的节点格式化与源文件不一致
                 path2.value.elements.push(
                   objectExpression([
                     {
