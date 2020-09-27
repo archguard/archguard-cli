@@ -38,7 +38,6 @@ function menuConfigHandler(menuPath, menuText) {
     child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
     const codeResult = handleMenu(menuConfigFile, menuPath, '测试');
-    console.log('codeResult: ', codeResult);
     fs.writeFileSync(
       path.join(process.cwd(), './layouts/base/config.tsx'),
       codeResult
