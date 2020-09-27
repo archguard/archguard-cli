@@ -1,62 +1,9 @@
-const parser = require('@babel/parser');
-const generator = require('@babel/generator').default;
-const traverse = require('@babel/traverse').default;
-const t = require('@babel/types');
 const fs = require('fs');
 const path = require('path');
+const recast = require('recast');
+const { identifier, stringLiteral, objectExpression } = recast.types.builders;
+const { menuVisitor } = require('../ast/visitors');
 const { getSplitString, toUpperCaseFirstWord } = require('../utils');
-
-function createMemberExpression(parentKey, childKey) {
-  return t.objectExpression([
-    {
-      key: t.identifier('key'),
-      type: 'ObjectProperty',
-      value: t.StringLiteral(`/${parentKey}/${childKey}`),
-    },
-    {
-      key: t.identifier('text'),
-      type: 'ObjectProperty',
-      value: t.StringLiteral(`中文`),
-      // value: t.StringLiteral(`/${parentKey}/${childKey}`),
-    },
-  ]);
-}
-
-function handleMenu(code, parentKey, childKey) {
-  const ast = parser.parse(code, {
-    sourceType: 'module',
-    plugins: ['jsx'],
-  });
-
-  traverse(ast, {
-    ObjectExpression(path) {
-      path.node.properties.forEach((item) => {
-        //TODO: 处理没有找到 key 的情况，给予提示
-        if (item.value.value === parentKey) {
-          path.traverse({
-            ObjectProperty(path2) {
-              //找到 children属性
-              if (path2.node.key.name === 'children') {
-                path2.node.value.elements.push(
-                  createMemberExpression(parentKey, childKey)
-                );
-              }
-            },
-          });
-        }
-      });
-    },
-  });
-
-  return generator(
-    ast,
-    {
-      // retainLines: true,
-      // minified: false,
-    },
-    code
-  );
-}
 
 function getMenuConfigFile() {
   //默认都在 src 目录下执行
@@ -66,36 +13,38 @@ function getMenuConfigFile() {
   );
 }
 
-function rewrite(newCode) {
-  fs.writeFile(
-    path.join(process.cwd(), './layouts/base/config.tsx'),
-    newCode,
-    {
-      encoding: 'utf-8',
-    },
-    () => {}
-  );
+function handleMenu(code, menuPath, menuName) {
+  if (!menuName) {
+    console.error('请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页');
+    menuName = menuPath;
+  }
+  let { parent, child } = getSplitString(menuPath);
+  const menuAst = recast.parse(code);
+  recast.visit(menuAst, menuVisitor(child, menuName, parent));
+  return recast.print(menuAst).code;
 }
 
 /**
  *
  *
  * @param {*} menuPath 菜单路径 例如 systemEvaluation/demo（父/子）,若不加分隔符 /，则视为新增一级菜单
- * @param {*} menuText 菜单显示文字
+ * @param {*} menuName 菜单显示文字
  */
-function menuConfigHandler(menuPath, menuText) {
-  console.log('menuPath: ', menuPath);
+function menuConfigHandler(menuPath, menuName) {
   if (menuPath.includes('/')) {
-    let { parent, child } = getSplitString(menuPath);
+    let { child } = getSplitString(menuPath);
     if (!child) {
       console.error('分隔符后面不能为空字符！');
       return;
     }
+
     child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
-
-    const codeResult = handleMenu(menuConfigFile, parent, child);
-    rewrite(codeResult.code);
+    const codeResult = handleMenu(menuConfigFile, menuPath, menuName);
+    fs.writeFileSync(
+      path.join(process.cwd(), './layouts/base/config.tsx'),
+      codeResult
+    );
   } else {
     //TODO: 处理顶级菜单
     console.log('menuConfigHandler 没有指定父节点');

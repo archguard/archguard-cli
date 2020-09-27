@@ -51,6 +51,5 @@ function handleMenu(code) {
 const code = fs.readFileSync(path.join(__dirname, './rawData'), 'utf-8');
 
 const codeResult = handleMenu(code);
-console.log('codeResult: ', codeResult.code);
 
 fs.writeFileSync(path.join(__dirname, './result'), codeResult.code);

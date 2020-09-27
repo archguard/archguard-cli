@@ -41,7 +41,7 @@ function createFile(templateFileName, filePath, fileName) {
   );
 }
 
-function generatePage(fileName) {
+function generatePage(fileName, menuName) {
   if (!fileName.includes('/')) {
     console.error(
       '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory'
@@ -52,7 +52,7 @@ function generatePage(fileName) {
   const { parent, child } = getSplitString(fileName);
   createFile('page', `./pages/${parent}`, child);
   fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
-  menuConfigHandler(fileName);
+  menuConfigHandler(fileName, menuName);
   routerHandler(fileName);
 }
 
@@ -73,7 +73,8 @@ function generateComponentBusiness(fileName) {
   createFile('componentBusiness', './components/Business', fileName);
 }
 
-function generate(options, actionName, fileName) {
+function generate(options, actionName, fileName, menuName) {
+  console.log('menuName: ', menuName);
   validate([
     {
       fn: () => !process.cwd().endsWith('/src'),
@@ -87,7 +88,7 @@ function generate(options, actionName, fileName) {
     switch (actionName) {
       case 'page':
       case 'p':
-        generatePage(fileName);
+        generatePage(fileName, menuName);
         break;
 
       case 'component':
@@ -102,6 +103,7 @@ function generate(options, actionName, fileName) {
 }
 
 function initCommandGenerate(program) {
+  // ag g page xxx/xxx2 菜单名
   program
     .command('generate')
     .alias('g')
