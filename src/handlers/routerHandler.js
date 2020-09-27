@@ -1,33 +1,9 @@
-// const parser = require('@babel/parser');
-// const generator = require('@babel/generator').default;
-// const traverse = require('@babel/traverse').default;
-// const t = require('@babel/types');
 const fs = require('fs');
 const path = require('path');
 const { routerVisitor } = require('../ast/visitors');
 const { getSplitString, toUpperCaseFirstWord } = require('../utils');
 const recast = require('recast');
 const { identifier, stringLiteral, objectExpression } = recast.types.builders;
-
-// const menuKeyMap = {
-//   systemEvaluation: 'system-evaluation',
-//   analysisTools: 'analysis',
-// };
-
-// function createMemberExpression(routerPath, componentPath) {
-//   return t.objectExpression([
-//     {
-//       key: t.identifier('path'),
-//       type: 'ObjectProperty',
-//       value: t.StringLiteral(routerPath),
-//     },
-//     {
-//       key: t.identifier('component'),
-//       type: 'ObjectProperty',
-//       value: t.StringLiteral(componentPath),
-//     },
-//   ]);
-// }
 
 function getRouterConfigFile() {
   //默认都在 src 目录下执行
