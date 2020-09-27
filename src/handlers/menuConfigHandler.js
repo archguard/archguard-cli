@@ -16,7 +16,7 @@ function createMemberExpression(parentKey, childKey) {
     {
       key: t.identifier('text'),
       type: 'ObjectProperty',
-      value: t.StringLiteral(`中文`),
+      value: t.StringLiteral(`中文2`),
       // value: t.StringLiteral(`/${parentKey}/${childKey}`),
     },
   ]);
