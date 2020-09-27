@@ -50,20 +50,20 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
             // console.log('item 的值是：', item);
             recast.visit(item, {
               visitArrayExpression(path2) {
-                // path2.value.elements.push(
-                //   objectExpression([
-                //     {
-                //       key: identifier('key'),
-                //       value: stringLiteral('/' + key),
-                //       type: 'ObjectProperty',
-                //     },
-                //     {
-                //       key: identifier('text'),
-                //       value: stringLiteral(menuName),
-                //       type: 'ObjectProperty',
-                //     },
-                //   ])
-                // );
+                path2.value.elements.push(
+                  objectExpression([
+                    {
+                      key: identifier('key'),
+                      value: stringLiteral('/' + key),
+                      type: 'ObjectProperty',
+                    },
+                    {
+                      key: identifier('text'),
+                      value: stringLiteral(menuName),
+                      type: 'ObjectProperty',
+                    },
+                  ])
+                );
                 return false;
               },
             });

@@ -11,13 +11,11 @@ export const menuList = configForTargets({
       key: "systemEvaluation",
       text: "架构评估",
       icon: <FileTextOutlined />,
-      children: [
-        // { key: "/system-evaluation", text: "架构评估", },
-        { key: "/system-evaluation/sizing-evaluation", text: "体量维度" },
-        { key: "/system-evaluation/coupling-evaluation", text: "耦合维度" },
-        { key: "/system-evaluation/cohesion-evaluation", text: "内聚度维度" },
-        { key: "/system-evaluation/Redundancy", text: "冗余度维度" },
-      ],
+      children: [// { key: "/system-evaluation", text: "架构评估", },
+      { key: "/system-evaluation/sizing-evaluation", text: "体量维度" }, { key: "/system-evaluation/coupling-evaluation", text: "耦合维度" }, { key: "/system-evaluation/cohesion-evaluation", text: "内聚度维度" }, { key: "/system-evaluation/Redundancy", text: "冗余度维度" }, {
+        key: "/xxx/xxx2",
+        text: "中文菜单"
+      }],
     },
     {
       key: "analysisTools",

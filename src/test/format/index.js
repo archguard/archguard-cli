@@ -5,7 +5,7 @@ const { routerVisitor, menuVisitor } = require('../../ast/visitors');
 const { identifier, stringLiteral, objectExpression } = recast.types.builders;
 
 const routerCode = fs
-  .readFileSync(path.join(__dirname, './rawData.tsx'))
+  .readFileSync(path.join(__dirname, './router.tsx'))
   .toString();
 
 const menuCode = fs.readFileSync(path.join(__dirname, './menu.tsx')).toString();
@@ -14,7 +14,7 @@ function compile(code) {
   const routerAst = recast.parse(routerCode);
   const menuAst = recast.parse(menuCode);
 
-  // recast.visit(routerAst, routerVisitor('xxx', '中文path'));
+  recast.visit(routerAst, routerVisitor('xxx', '中文path'));
 
   recast.visit(
     menuAst,
@@ -28,7 +28,7 @@ function compile(code) {
 }
 
 const { transformedRouterCode, transformedMenuCode } = compile();
-console.log('transformedMenuCode: ', transformedMenuCode);
-// console.log('transformedRouterCode: ', transformedRouterCode);
 
 fs.writeFileSync(path.join(__dirname, './menu2.tsx'), transformedMenuCode);
+
+fs.writeFileSync(path.join(__dirname, './router2.tsx'), transformedRouterCode);
