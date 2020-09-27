@@ -57,6 +57,10 @@ export default defineConfig({
         { path: "analysis/dependence", component: "@/pages/analysis/dependence" },
         { path: "quality-gate-profile", component: "@/pages/quality-gate-profile" },
         { path: "metric/:type?", component: "@/pages/metrics" },
+        {
+          path: "xxx",
+          component: "中文path"
+        }
       ],
     },
   ],

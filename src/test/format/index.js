@@ -29,6 +29,6 @@ function compile(code) {
 
 const { transformedRouterCode, transformedMenuCode } = compile();
 
-fs.writeFileSync(path.join(__dirname, './menu2.tsx'), transformedMenuCode);
+fs.writeFileSync(path.join(__dirname, './menu.tsx'), transformedMenuCode);
 
-fs.writeFileSync(path.join(__dirname, './router2.tsx'), transformedRouterCode);
+fs.writeFileSync(path.join(__dirname, './router.tsx'), transformedRouterCode);

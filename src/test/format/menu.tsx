@@ -16,6 +16,10 @@ export const menuList = configForTargets({
         { key: "/system-evaluation/coupling-evaluation", text: "耦合维度" },
         { key: "/system-evaluation/cohesion-evaluation", text: "内聚度维度" },
         { key: "/system-evaluation/Redundancy", text: "冗余度维度" },
+        {
+          key: "/xxx/xxx2",
+          text: "中文菜单"
+        }
       ],
     },
     {
