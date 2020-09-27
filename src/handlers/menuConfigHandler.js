@@ -40,10 +40,10 @@ function menuConfigHandler(menuPath, menuName) {
 
     child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
-    const codeResult = handleMenu(menuConfigFile, menuPath, menuName);
+    const code = handleMenu(menuConfigFile, menuPath, menuName);
     fs.writeFileSync(
       path.join(process.cwd(), './layouts/base/config.tsx'),
-      codeResult
+      code
     );
   } else {
     //TODO: 处理顶级菜单

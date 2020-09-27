@@ -36,8 +36,8 @@ function routerHandler(menuPath) {
 
     child = toUpperCaseFirstWord(child);
     const routerConfigFile = getRouterConfigFile();
-    const codeResult = handleRouter(routerConfigFile, menuPath);
-    fs.writeFileSync(path.join(process.cwd(), '../.umirc.ts'), codeResult);
+    const code = handleRouter(routerConfigFile, menuPath);
+    fs.writeFileSync(path.join(process.cwd(), '../.umirc.ts'), code);
   } else {
     //TODO: 处理一级菜单
     console.log('routerHandler 没有指定父节点');
