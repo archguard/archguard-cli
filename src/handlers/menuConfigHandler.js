@@ -14,6 +14,10 @@ function getMenuConfigFile() {
 }
 
 function handleMenu(code, menuPath, menuName) {
+  if (!menuName) {
+    console.error('请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页');
+    menuName = menuPath;
+  }
   let { parent, child } = getSplitString(menuPath);
   const menuAst = recast.parse(code);
   recast.visit(menuAst, menuVisitor(child, menuName, parent));
@@ -24,10 +28,9 @@ function handleMenu(code, menuPath, menuName) {
  *
  *
  * @param {*} menuPath 菜单路径 例如 systemEvaluation/demo（父/子）,若不加分隔符 /，则视为新增一级菜单
- * @param {*} menuText 菜单显示文字
+ * @param {*} menuName 菜单显示文字
  */
-function menuConfigHandler(menuPath, menuText) {
-  console.log('menuPath: ', menuPath);
+function menuConfigHandler(menuPath, menuName) {
   if (menuPath.includes('/')) {
     let { child } = getSplitString(menuPath);
     if (!child) {
@@ -37,7 +40,7 @@ function menuConfigHandler(menuPath, menuText) {
 
     child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
-    const codeResult = handleMenu(menuConfigFile, menuPath, '测试');
+    const codeResult = handleMenu(menuConfigFile, menuPath, menuName);
     fs.writeFileSync(
       path.join(process.cwd(), './layouts/base/config.tsx'),
       codeResult
