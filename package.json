@@ -13,6 +13,8 @@
   "author": "qinjialei",
   "license": "MIT",
   "dependencies": {
+    "@babel/parser": "^7.11.5",
+    "@babel/traverse": "^7.11.5",
     "commander": "^6.1.0",
     "handlebars": "^4.7.6",
     "recast": "^0.20.3"
