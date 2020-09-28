@@ -74,7 +74,6 @@ function generateComponentBusiness(fileName) {
 }
 
 function generate(options, actionName, fileName, menuName) {
-  console.log('menuName: ', menuName);
   validate([
     {
       fn: () => !process.cwd().endsWith('/src'),
