@@ -26,7 +26,6 @@ npm install arch-guard-cli -g
 - 创建基础组件：`ag g c -ba (ag generate component --basic)`
 - 创建业务组件：`ag g c -bu (ag generate component --business)`
 
-<img src="./assets/创建页面.gif" />
 
 ## 常用缩写
 - `generate => g`
