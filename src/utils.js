@@ -12,6 +12,12 @@ function toUpperCaseFirstWord(str) {
   return str.slice(0, 1).toUpperCase() + str.slice(1);
 }
 
+// foo/bar => foo/Bar
+function formatFileName(fileName) {
+  const { parent, child } = getSplitString(fileName);
+  return `${parent}/${toUpperCaseFirstWord(child)}`;
+}
+
 function generateFileByTemplate(template, data) {
   const content = Handlebars.compile(template)(data);
   return content;
@@ -33,4 +39,5 @@ module.exports = {
   toUpperCaseFirstWord,
   generateFileByTemplate,
   validate,
+  formatFileName,
 };

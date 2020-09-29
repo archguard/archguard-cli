@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { routerVisitor } = require('../ast/visitors');
-const { getSplitString, toUpperCaseFirstWord } = require('../utils');
+const { getSplitString } = require('../utils');
 const recast = require('recast');
-const { identifier, stringLiteral, objectExpression } = recast.types.builders;
 
 function getRouterConfigFile() {
   //默认都在 src 目录下执行
@@ -34,7 +33,6 @@ function routerHandler(menuPath) {
       return;
     }
 
-    child = toUpperCaseFirstWord(child);
     const routerConfigFile = getRouterConfigFile();
     const code = handleRouter(routerConfigFile, menuPath);
     fs.writeFileSync(path.join(process.cwd(), '../.umirc.ts'), code);

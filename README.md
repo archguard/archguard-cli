@@ -22,15 +22,23 @@ npm install arch-guard-cli -g
 ```
 
 ## 常用命令(必须在项目的**src**目录下运行)
-- 创建页面：`ag g page Demo`
-- 创建基础组件：`ag g c -ba (ag generate component --basic)`
-- 创建业务组件：`ag g c -bu (ag generate component --business)`
+- 创建页面：`ag g p systemEvaluation/Demo 页面菜单名`
+> 上述命令会在 `pages/systemEvaluation`文件夹下新建`Demo`页面，并且自动配置好`路由`和`菜单`（菜单名设置为最后一个参数：页面菜单名）
+- 创建基础组件：`ag g c 组件名 -ba `
+- 创建业务组件：`ag g c 组件名 -bu `
 
 
 ## 常用缩写
-- `generate => g`
-- `component => c` 
-- `--basic => -ba`
-- `--business => -bu`
- 
+- `g =>  generate`
+- `c => component` 
+- `-ba => --basic `
+- `-bu => --business`
 
+## 调试
+在本项目路径下执行
+```bash
+npm link
+```
+
+
+ 

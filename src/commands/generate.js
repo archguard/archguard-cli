@@ -4,10 +4,10 @@ const menuConfigHandler = require('../handlers/menuConfigHandler');
 const routerHandler = require('../handlers/routerHandler');
 
 const {
-  toUpperCaseFirstWord,
   generateFileByTemplate,
   validate,
   getSplitString,
+  formatFileName,
 } = require('../utils');
 
 function copyTemplate(from, to, fileName) {
@@ -20,14 +20,11 @@ function copyTemplate(from, to, fileName) {
 }
 
 /**
- *
- *
  * @param {*} templateFileName componentBasic | componentBusiness | page
  * @param {*} fileName
  * @param {*} filePath './pages' | './components'
  */
 function createFile(templateFileName, filePath, fileName) {
-  fileName = toUpperCaseFirstWord(fileName);
   fs.mkdirSync(filePath + `/${fileName}`);
   copyTemplate(
     templateFileName,
@@ -84,6 +81,7 @@ function generate(options, actionName, fileName, menuName) {
       message: 'pages下文件必须以首字母大写+驼峰命名！',
     },
   ])(() => {
+    fileName = formatFileName(fileName);
     switch (actionName) {
       case 'page':
       case 'p':

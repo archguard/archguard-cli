@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const recast = require('recast');
-const { identifier, stringLiteral, objectExpression } = recast.types.builders;
 const { menuVisitor } = require('../ast/visitors');
-const { getSplitString, toUpperCaseFirstWord } = require('../utils');
+const { getSplitString } = require('../utils');
 
 function getMenuConfigFile() {
   //默认都在 src 目录下执行
@@ -38,7 +37,6 @@ function menuConfigHandler(menuPath, menuName) {
       return;
     }
 
-    child = toUpperCaseFirstWord(child);
     const menuConfigFile = getMenuConfigFile();
     const code = handleMenu(menuConfigFile, menuPath, menuName);
     fs.writeFileSync(
