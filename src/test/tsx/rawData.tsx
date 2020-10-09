@@ -25,6 +25,14 @@ const menuList = configForTargets({
         { key: "/systemEvaluation/CouplingEvaluation", text: "耦合维度" },
         { key: "/systemEvaluation/CohesionEvaluation", text: "内聚维度" },
         { key: "/systemEvaluation/Redundancy", text: "冗余维度" },
+        {
+          key: "/1/2",
+          text: "menuName"
+        },
+        {
+          key: "/1/2",
+          text: "menuName"
+        }
       ],
     },
     {
