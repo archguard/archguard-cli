@@ -22,8 +22,8 @@ function copyTemplate(from, to, fileName) {
 
 /**
  * @param {*} templateFileName componentBasic | componentBusiness | page
- * @param {*} fileName
  * @param {*} filePath './pages' | './components'
+ * @param {*} fileName 文件名
  */
 function createFile(templateFileName, filePath, fileName) {
   fs.mkdirSync(filePath + `/${fileName}`);
