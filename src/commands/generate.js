@@ -1,13 +1,16 @@
 const fs = require('fs');
 const path = require('path');
+const { ROUTER_PATH, MENU_PATH } = require('../config');
 const menuConfigHandler = require('../handlers/menuConfigHandler');
 const routerHandler = require('../handlers/routerHandler');
+const menuTransformer = require('../transformer/menu');
 
 const {
   generateFileByTemplate,
   validate,
   getSplitString,
   formatFileName,
+  transform,
 } = require('../utils');
 
 function copyTemplate(from, to, fileName) {
@@ -38,19 +41,30 @@ function createFile(templateFileName, filePath, fileName) {
   );
 }
 
-function generatePage(fileName, menuName) {
-  if (!fileName.includes('/')) {
+/**
+ * @param {*} pathArg 路径参数 例如 xxx/xxx2
+ * @param {*} menuName 菜单显示文本 例如 主页
+ */
+function generatePage(pathArg, menuName) {
+  if (!pathArg.includes('/')) {
     console.error(
       '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory'
     );
     return;
-  }
+  } else {
+    let { parent, child } = getSplitString(pathArg);
+    if (!parent || !child) {
+      console.error('分隔符前、后不能为空字符！');
+      return;
+    }
 
-  const { parent, child } = getSplitString(fileName);
-  createFile('page', `./pages/${parent}`, child);
-  fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
-  menuConfigHandler(fileName, menuName);
-  routerHandler(fileName);
+    menuTransformer(pathArg, menuName);
+
+    createFile('page', `./pages/${parent}`, child);
+    fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
+    // menuConfigHandler(pathArg, menuName);
+    routerHandler(pathArg);
+  }
 }
 
 function generateComponent(fileName, componentOptions) {

@@ -1,6 +1,7 @@
 const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const recast = require('recast');
 
 function getSplitString(str, flag = '/') {
   const parent = str.slice(0, str.indexOf(flag));
@@ -23,6 +24,16 @@ function generateFileByTemplate(template, data) {
   return content;
 }
 
+function transform(filePath, visitFn) {
+  const code = fs.readFileSync(path.join(process.cwd(), filePath), 'utf-8');
+  const ast = recast.parse(code, {
+    parser: require('recast/parsers/babel'), // recast 默认使用的 parser 为  esprima，处理不了 jsx
+  });
+  visitFn(ast);
+  const result = recast.print(ast).code;
+  fs.writeFileSync(path.join(process.cwd(), filePath), result);
+}
+
 function validate(conditions) {
   let res = true;
   for (const item of conditions) {
@@ -40,4 +51,5 @@ module.exports = {
   generateFileByTemplate,
   validate,
   formatFileName,
+  transform,
 };
