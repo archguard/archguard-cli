@@ -56,9 +56,16 @@ function generatePage(pathArg, menuName) {
       console.error('分隔符前、后不能为空字符！');
       return;
     }
+    if (!menuName) {
+      console.error(
+        '请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页'
+      );
+      menuName = menuPath;
+    }
+
     createFile('page', `./pages/${parent}`, child);
     fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
-    
+
     routerHandler(pathArg);
     menuTransformer(pathArg, menuName);
   }
