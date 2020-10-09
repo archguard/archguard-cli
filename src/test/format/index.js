@@ -8,11 +8,16 @@ const routerCode = fs
   .readFileSync(path.join(__dirname, './router.tsx'))
   .toString();
 
-const menuCode = fs.readFileSync(path.join(__dirname, './menu-tsx.tsx')).toString();
+const menuCode = fs
+  .readFileSync(path.join(__dirname, './menu2.tsx'))
+  .toString();
 
 function compile(code) {
   const routerAst = recast.parse(routerCode);
-  const menuAst = recast.parse(menuCode);
+  const menuAst = recast.parse(menuCode, {
+    parser: require('recast/parsers/babel'),
+  });
+  console.log('menuAst: ', menuAst);
 
   recast.visit(routerAst, routerVisitor('xxx', '中文path'));
 
@@ -29,6 +34,6 @@ function compile(code) {
 
 const { transformedRouterCode, transformedMenuCode } = compile();
 
-fs.writeFileSync(path.join(__dirname, './menu-tsx.tsx'), transformedMenuCode);
+fs.writeFileSync(path.join(__dirname, './menu2.tsx'), transformedMenuCode);
 
 fs.writeFileSync(path.join(__dirname, './router.tsx'), transformedRouterCode);
