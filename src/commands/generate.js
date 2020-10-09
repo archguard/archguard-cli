@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const { ROUTER_PATH, MENU_PATH } = require('../config');
-const menuConfigHandler = require('../handlers/menuConfigHandler');
 const routerHandler = require('../handlers/routerHandler');
 const menuTransformer = require('../transformer/menu');
 
@@ -62,7 +61,6 @@ function generatePage(pathArg, menuName) {
 
     createFile('page', `./pages/${parent}`, child);
     fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
-    // menuConfigHandler(pathArg, menuName);
     routerHandler(pathArg);
   }
 }

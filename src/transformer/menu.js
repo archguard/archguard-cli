@@ -1,3 +1,5 @@
+// 处理菜单文件
+
 const { MENU_PATH } = require('../config');
 const { transform, getSplitString } = require('../utils');
 const recast = require('recast');
