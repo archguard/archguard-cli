@@ -14,26 +14,26 @@ const menuCode = fs
 
 function compile(code) {
   const routerAst = recast.parse(routerCode);
-  const menuAst = recast.parse(menuCode, {
-    parser: require('recast/parsers/babel'),
-  });
-  console.log('menuAst: ', menuAst);
+  // const menuAst = recast.parse(menuCode, {
+  //   parser: require('recast/parsers/babel'),
+  // });
 
   recast.visit(routerAst, routerVisitor('xxx', '中文path'));
 
-  recast.visit(
-    menuAst,
-    menuVisitor('xxx/xxx2', '中文菜单', 'systemEvaluation')
-  );
+  // recast.visit(
+  //   menuAst,
+  //   menuVisitor('xxx/xxx2', '中文菜单', 'systemEvaluation')
+  // );
 
   return {
     transformedRouterCode: recast.print(routerAst).code,
-    transformedMenuCode: recast.print(menuAst).code,
+    // transformedMenuCode: recast.print(menuAst).code,
   };
 }
 
-const { transformedRouterCode, transformedMenuCode } = compile();
+const { transformedRouterCode } = compile();
+console.log('transformedRouterCode: ', transformedRouterCode);
 
-fs.writeFileSync(path.join(__dirname, './menu2.tsx'), transformedMenuCode);
+// fs.writeFileSync(path.join(__dirname, './menu2.tsx'), transformedMenuCode);
 
 fs.writeFileSync(path.join(__dirname, './router.tsx'), transformedRouterCode);

@@ -84,6 +84,10 @@ export default defineConfig({
         {
           path: "xxx",
           component: "中文path"
+        },
+        {
+          path: "xxx",
+          component: "中文path"
         }
       ],
     },

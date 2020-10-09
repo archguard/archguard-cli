@@ -44,6 +44,7 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
   return {
     visitArrayExpression(path) {
       path.node.elements.forEach((item) => {
+        console.log('item: ', item);
         item.properties.forEach((item2) => {
           if (item2.key.name === 'key' && item2.value.value === parentKey) {
             recast.visit(item, {
