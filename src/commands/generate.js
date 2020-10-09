@@ -56,12 +56,11 @@ function generatePage(pathArg, menuName) {
       console.error('分隔符前、后不能为空字符！');
       return;
     }
-
-    menuTransformer(pathArg, menuName);
-
     createFile('page', `./pages/${parent}`, child);
     fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
+    
     routerHandler(pathArg);
+    menuTransformer(pathArg, menuName);
   }
 }
 
