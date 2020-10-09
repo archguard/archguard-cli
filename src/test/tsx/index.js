@@ -26,4 +26,3 @@ const { transformedMenuCode } = compile();
 console.log('transformedMenuCode: ', transformedMenuCode);
 
 fs.writeFileSync(path.join(__dirname, './rawData.tsx'), transformedMenuCode);
-
