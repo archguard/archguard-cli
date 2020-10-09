@@ -8,7 +8,7 @@ const routerCode = fs
   .readFileSync(path.join(__dirname, './router.tsx'))
   .toString();
 
-const menuCode = fs.readFileSync(path.join(__dirname, './menu.tsx')).toString();
+const menuCode = fs.readFileSync(path.join(__dirname, './menu-tsx.tsx')).toString();
 
 function compile(code) {
   const routerAst = recast.parse(routerCode);
@@ -29,6 +29,6 @@ function compile(code) {
 
 const { transformedRouterCode, transformedMenuCode } = compile();
 
-fs.writeFileSync(path.join(__dirname, './menu.tsx'), transformedMenuCode);
+fs.writeFileSync(path.join(__dirname, './menu-tsx.tsx'), transformedMenuCode);
 
 fs.writeFileSync(path.join(__dirname, './router.tsx'), transformedRouterCode);
