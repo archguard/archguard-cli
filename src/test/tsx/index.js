@@ -23,6 +23,6 @@ function compile(code) {
 }
 
 const { transformedMenuCode } = compile();
-console.log('transformedMenuCode: ', transformedMenuCode);
+// console.log('transformedMenuCode: ', transformedMenuCode);
 
-fs.writeFileSync(path.join(__dirname, './rawData.tsx'), transformedMenuCode);
+fs.writeFileSync(path.join(__dirname, './rawData2.tsx'), transformedMenuCode);

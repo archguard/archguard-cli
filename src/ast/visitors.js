@@ -43,6 +43,7 @@ exports.menuVisitor = (key = '', menuName = '', parentKey = '') => {
   }
   return {
     visitArrayExpression(path) {
+      // console.log('path: ', path);
       path.node.elements.forEach((item) => {
         console.log('item: ', item);
         item.properties.forEach((item2) => {
