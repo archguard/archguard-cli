@@ -8,7 +8,6 @@ const {
   validate,
   getSplitString,
   formatFileName,
-  transform,
 } = require('../utils');
 
 function copyTemplate(from, to, fileName) {
