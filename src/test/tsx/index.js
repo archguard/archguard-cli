@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const recast = require('recast');
-const { routerVisitor, menuVisitor } = require('../../ast/visitors');
+const { menuVisitor } = require('../../ast/visitors');
 
 const menuCode = fs
   .readFileSync(path.join(__dirname, './rawData.tsx'))
