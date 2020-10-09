@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { ROUTER_PATH, MENU_PATH } = require('../config');
-const routerHandler = require('../handlers/routerHandler');
 const menuTransformer = require('../transformer/menu');
+const routerTransformer = require('../transformer/router');
 
 const {
   generateFileByTemplate,
@@ -60,13 +59,13 @@ function generatePage(pathArg, menuName) {
       console.error(
         '请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页'
       );
-      menuName = menuPath;
+      menuName = pathArg;
     }
 
     createFile('page', `./pages/${parent}`, child);
     fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
 
-    routerHandler(pathArg);
+    routerTransformer(pathArg);
     menuTransformer(pathArg, menuName);
   }
 }
