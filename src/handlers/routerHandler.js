@@ -3,10 +3,11 @@ const path = require('path');
 const { routerVisitor } = require('../ast/visitors');
 const { getSplitString } = require('../utils');
 const recast = require('recast');
+const { ROUTER_PATH } = require('../config');
 
 function getRouterConfigFile() {
   //默认都在 src 目录下执行
-  return fs.readFileSync(path.join(process.cwd(), '../.umirc.ts'), 'utf-8');
+  return fs.readFileSync(path.join(process.cwd(), ROUTER_PATH), 'utf-8');
 }
 
 function handleRouter(code, menuPath) {
@@ -35,7 +36,7 @@ function routerHandler(menuPath) {
 
     const routerConfigFile = getRouterConfigFile();
     const code = handleRouter(routerConfigFile, menuPath);
-    fs.writeFileSync(path.join(process.cwd(), '../.umirc.ts'), code);
+    fs.writeFileSync(path.join(process.cwd(), ROUTER_PATH), code);
   } else {
     //TODO: 处理一级菜单
     console.log('routerHandler 没有指定父节点');
