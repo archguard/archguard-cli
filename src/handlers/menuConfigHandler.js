@@ -52,7 +52,7 @@ function handleMenu(code, menuPath, menuName) {
   }
   let { parent, child } = getSplitString(menuPath);
   const menuAst = recast.parse(code, {
-    parser: require('recast/parsers/babel'),
+    parser: require('recast/parsers/babel'), // recast 默认使用的 parser 为  esprima，处理不了 jsx
   });
   visitAst(menuAst, {
     key: child,
