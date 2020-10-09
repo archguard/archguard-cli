@@ -8,6 +8,11 @@ const { identifier, stringLiteral, objectExpression } = recast.types.builders;
  * @param {*} menuName 菜单显示文本 例如 主页
  */
 module.exports = (pathArg, menuName) => {
+  if (!menuName) {
+    console.error('请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页');
+    menuName = menuPath;
+  }
+
   transform(MENU_PATH, (ast) => {
     let { parent, child } = getSplitString(pathArg);
 
