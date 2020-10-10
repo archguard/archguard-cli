@@ -47,7 +47,12 @@ function validate(conditions) {
  * @param {*} to 待新建文件路径 指定一个路径 ./a/b/c/d.js 若d.js的父目录不存在，则递归创建
  * @param {*} content
  */
-async function generateFile({ from = '', to = '', data = {} }) {
+async function generateFile({
+  from = '',
+  to = '',
+  data = {},
+  callback = () => {},
+}) {
   const rawContent = fs.readFileSync(from, 'utf-8');
   const content = Handlebars.compile(rawContent)(data);
   const pathArr = to.split('/');
@@ -55,6 +60,7 @@ async function generateFile({ from = '', to = '', data = {} }) {
   const dir = pathArr.slice(0, -1).join('/');
   const lastPath = dir + '/' + file;
   await dirExists(dir);
+  callback();
   fs.writeFileSync(lastPath, content);
 }
 
@@ -117,7 +123,6 @@ async function dirExists(dir) {
 module.exports = {
   getSplitString,
   toUpperCaseFirstWord,
-  generateFileByTemplate,
   validate,
   formatFileName,
   transform,

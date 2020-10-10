@@ -41,6 +41,11 @@ function generatePage(pathArg, menuName) {
       data: {
         fileName: child,
       },
+      callback() {
+        fs.mkdirSync(
+          path.join(process.cwd() + `/pages/${parent}/${child}/components`)
+        );
+      },
     });
 
     generateFile({
