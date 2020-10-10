@@ -9,35 +9,8 @@ const {
   getSplitString,
   formatFileName,
   toUpperCaseFirstWord,
+  generateFile,
 } = require('../utils');
-
-function copyTemplate(from, to, fileName) {
-  from = path.join(__dirname, '../templates', from);
-  const rawContent = fs.readFileSync(from, 'utf-8');
-  const finalContent = generateFileByTemplate(rawContent, {
-    fileName,
-  });
-  fs.writeFileSync(to, finalContent);
-}
-
-/**
- * @param {*} templateFileName componentBasic | componentBusiness | page
- * @param {*} filePath './pages' | './components'
- * @param {*} fileName 文件名
- */
-function createFile(templateFileName, filePath, fileName) {
-  fs.mkdirSync(filePath + `/${fileName}`);
-  copyTemplate(
-    templateFileName,
-    filePath + `/${fileName}/${fileName}.tsx`,
-    fileName
-  );
-  copyTemplate(
-    templateFileName + 'Less',
-    filePath + `/${fileName}/${fileName}.less`,
-    fileName
-  );
-}
 
 /**
  * @param {*} pathArg 路径参数 例如 xxx/xxx2
@@ -63,8 +36,21 @@ function generatePage(pathArg, menuName) {
       menuName = pathArg;
     }
 
-    createFile('page', `./pages/${parent}`, child);
-    fs.mkdirSync(`./pages/${parent}` + `/${child}` + '/components');
+    generateFile({
+      from: path.join(__dirname, '../templates/page.tsx'),
+      to: path.join(process.cwd() + `/pages/${parent}/${child}/${child}.tsx`),
+      data: {
+        fileName: child,
+      },
+    });
+
+    generateFile({
+      from: path.join(__dirname, '../templates/page.less'),
+      to: path.join(process.cwd() + `/pages/${parent}/${child}/${child}.less`),
+      data: {
+        fileName: child,
+      },
+    });
 
     routerTransformer(pathArg);
     menuTransformer(pathArg, menuName);
@@ -82,11 +68,47 @@ function generateComponent(fileName, componentOptions) {
 }
 
 function generateComponentBasic(fileName) {
-  createFile('componentBasic', './components/Basic', fileName);
+  generateFile({
+    from: path.join(__dirname, '../templates/componentBasic.tsx'),
+    to: path.join(
+      process.cwd() + `/components/Basic/${fileName}/${fileName}.tsx`
+    ),
+    data: {
+      fileName,
+    },
+  });
+
+  generateFile({
+    from: path.join(__dirname, '../templates/componentBasic.less'),
+    to: path.join(
+      process.cwd() + `/components/Basic/${fileName}/${fileName}.less`
+    ),
+    data: {
+      fileName,
+    },
+  });
 }
 
 function generateComponentBusiness(fileName) {
-  createFile('componentBusiness', './components/Business', fileName);
+  generateFile({
+    from: path.join(__dirname, '../templates/componentBusiness.tsx'),
+    to: path.join(
+      process.cwd() + `/components/Business/${fileName}/${fileName}.tsx`
+    ),
+    data: {
+      fileName,
+    },
+  });
+
+  generateFile({
+    from: path.join(__dirname, '../templates/componentBusiness.less'),
+    to: path.join(
+      process.cwd() + `/components/Business/${fileName}/${fileName}.less`
+    ),
+    data: {
+      fileName,
+    },
+  });
 }
 
 function generate(options, actionName, fileName, menuName) {
