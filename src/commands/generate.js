@@ -4,7 +4,6 @@ const menuTransformer = require('../transformer/menu');
 const routerTransformer = require('../transformer/router');
 
 const {
-  generateFileByTemplate,
   validate,
   getSplitString,
   formatFileName,

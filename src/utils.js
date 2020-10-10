@@ -19,11 +19,6 @@ function formatFileName(fileName) {
   return `${parent}/${toUpperCaseFirstWord(child)}`;
 }
 
-function generateFileByTemplate(template, data) {
-  const content = Handlebars.compile(template)(data);
-  return content;
-}
-
 function transform(filePath, visitFn) {
   const code = fs.readFileSync(path.join(process.cwd(), filePath), 'utf-8');
   const ast = recast.parse(code, {
