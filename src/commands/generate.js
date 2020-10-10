@@ -8,6 +8,7 @@ const {
   validate,
   getSplitString,
   formatFileName,
+  toUpperCaseFirstWord,
 } = require('../utils');
 
 function copyTemplate(from, to, fileName) {
@@ -49,6 +50,7 @@ function generatePage(pathArg, menuName) {
     );
     return;
   } else {
+    pathArg = formatFileName(pathArg);
     let { parent, child } = getSplitString(pathArg);
     if (!parent || !child) {
       console.error('分隔符前、后不能为空字符！');
@@ -70,6 +72,7 @@ function generatePage(pathArg, menuName) {
 }
 
 function generateComponent(fileName, componentOptions) {
+  fileName = toUpperCaseFirstWord(fileName);
   const { basic, business } = componentOptions;
   if (basic) {
     generateComponentBasic(fileName);
@@ -97,7 +100,6 @@ function generate(options, actionName, fileName, menuName) {
       message: 'pages下文件必须以首字母大写+驼峰命名！',
     },
   ])(() => {
-    fileName = formatFileName(fileName);
     switch (actionName) {
       case 'page':
       case 'p':
