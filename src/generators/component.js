@@ -45,7 +45,27 @@ function generateComponentBusiness(fileName) {
   });
 }
 
+//生成页面组件
+function generateComponentPage(fileName) {
+  generateFile({
+    from: path.join(__dirname, '../templates/page.tsx'),
+    to: path.join(process.cwd(), `${fileName}.tsx`),
+    data: {
+      fileName,
+    },
+  });
+
+  generateFile({
+    from: path.join(__dirname, '../templates/page.less'),
+    to: path.join(process.cwd(), `${fileName}.less`),
+    data: {
+      fileName,
+    },
+  });
+}
+
 module.exports = {
   generateComponentBasic,
   generateComponentBusiness,
+  generateComponentPage,
 };
