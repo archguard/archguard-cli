@@ -1,21 +1,21 @@
-const fs = require('fs');
-const path = require('path');
+const {
+  generateComponentBasic,
+  generateComponentBusiness,
+} = require('../generators/component');
+const { generatePage } = require('../generators/page');
 const menuTransformer = require('../transformer/menu');
 const routerTransformer = require('../transformer/router');
-
 const {
   validate,
   getSplitString,
   formatFileName,
   toUpperCaseFirstWord,
-  generateFile,
 } = require('../utils');
-
 /**
  * @param {*} pathArg 路径参数 例如 xxx/xxx2
  * @param {*} menuName 菜单显示文本 例如 主页
  */
-function generatePage(pathArg, menuName) {
+function pageHandler(pathArg, menuName) {
   if (!pathArg.includes('/')) {
     console.error(
       '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory'
@@ -35,33 +35,13 @@ function generatePage(pathArg, menuName) {
       menuName = pathArg;
     }
 
-    generateFile({
-      from: path.join(__dirname, '../templates/page.tsx'),
-      to: path.join(process.cwd() + `/pages/${parent}/${child}/${child}.tsx`),
-      data: {
-        fileName: child,
-      },
-      callback() {
-        fs.mkdirSync(
-          path.join(process.cwd() + `/pages/${parent}/${child}/components`)
-        );
-      },
-    });
-
-    generateFile({
-      from: path.join(__dirname, '../templates/page.less'),
-      to: path.join(process.cwd() + `/pages/${parent}/${child}/${child}.less`),
-      data: {
-        fileName: child,
-      },
-    });
-
+    generatePage(parent, child);
     routerTransformer(pathArg);
     menuTransformer(pathArg, menuName);
   }
 }
 
-function generateComponent(fileName, componentOptions) {
+function componentHandler(fileName, componentOptions) {
   fileName = toUpperCaseFirstWord(fileName);
   const { basic, business } = componentOptions;
   if (basic) {
@@ -69,50 +49,6 @@ function generateComponent(fileName, componentOptions) {
   } else if (business) {
     generateComponentBusiness(fileName);
   }
-}
-
-function generateComponentBasic(fileName) {
-  generateFile({
-    from: path.join(__dirname, '../templates/componentBasic.tsx'),
-    to: path.join(
-      process.cwd() + `/components/Basic/${fileName}/${fileName}.tsx`
-    ),
-    data: {
-      fileName,
-    },
-  });
-
-  generateFile({
-    from: path.join(__dirname, '../templates/componentBasic.less'),
-    to: path.join(
-      process.cwd() + `/components/Basic/${fileName}/${fileName}.less`
-    ),
-    data: {
-      fileName,
-    },
-  });
-}
-
-function generateComponentBusiness(fileName) {
-  generateFile({
-    from: path.join(__dirname, '../templates/componentBusiness.tsx'),
-    to: path.join(
-      process.cwd() + `/components/Business/${fileName}/${fileName}.tsx`
-    ),
-    data: {
-      fileName,
-    },
-  });
-
-  generateFile({
-    from: path.join(__dirname, '../templates/componentBusiness.less'),
-    to: path.join(
-      process.cwd() + `/components/Business/${fileName}/${fileName}.less`
-    ),
-    data: {
-      fileName,
-    },
-  });
 }
 
 function generate(options, actionName, fileName, menuName) {
@@ -129,12 +65,12 @@ function generate(options, actionName, fileName, menuName) {
     switch (actionName) {
       case 'page':
       case 'p':
-        generatePage(fileName, menuName);
+        pageHandler(fileName, menuName);
         break;
 
       case 'component':
       case 'c':
-        generateComponent(fileName, options);
+        componentHandler(fileName, options);
         break;
 
       default:
