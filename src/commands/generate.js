@@ -37,7 +37,7 @@ function componentHandler(fileName, componentOptions) {
     console.log('生成页面组件');
     generateComponentPage(fileName);
   } else {
-    if (!process.cwd().endsWith('/src')) {
+    if (!process.cwd().endsWith('src')) {
       error('请在项目的 src 目录下运行！');
     }
     if (basic) {
@@ -52,7 +52,7 @@ function generate(options, actionName, fileName, menuName) {
   switch (actionName) {
     case 'page':
     case 'p':
-      if (!process.cwd().endsWith('/src')) {
+      if (!process.cwd().endsWith('src')) {
         error('请在项目的 src 目录下运行！');
       }
       if (fileName.includes('-')) {
@@ -92,6 +92,7 @@ function initCommandGenerate(program) {
     .option('-ba, --basic', '创建 basic components')
     .option('-bu, --business', '创建 business components')
     .action((options) => {
+      console.log(111111111);
       generate(options, ...process.argv.slice(3));
     });
 }
