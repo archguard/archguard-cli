@@ -1,6 +1,7 @@
 const {
   generateComponentBasic,
   generateComponentBusiness,
+  generateComponentPage,
 } = require('../generators/component');
 const { generatePage } = require('../generators/page');
 const menuTransformer = require('../transformer/menu');
@@ -10,73 +11,76 @@ const {
   getSplitString,
   formatFileName,
   toUpperCaseFirstWord,
+  error,
 } = require('../utils');
 /**
  * @param {*} pathArg 路径参数 例如 xxx/xxx2
  * @param {*} menuName 菜单显示文本 例如 主页
  */
 function pageHandler(pathArg, menuName) {
-  if (!pathArg.includes('/')) {
-    console.error(
-      '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory'
-    );
+  pathArg = formatFileName(pathArg);
+  let { parent, child } = getSplitString(pathArg);
+  if (!parent || !child) {
+    console.error('分隔符前、后不能为空字符！');
     return;
-  } else {
-    pathArg = formatFileName(pathArg);
-    let { parent, child } = getSplitString(pathArg);
-    if (!parent || !child) {
-      console.error('分隔符前、后不能为空字符！');
-      return;
-    }
-    if (!menuName) {
-      console.error(
-        '请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页'
-      );
-      menuName = pathArg;
-    }
-
-    generatePage(parent, child);
-    routerTransformer(pathArg);
-    menuTransformer(pathArg, menuName);
   }
+  generatePage(parent, child);
+  routerTransformer(pathArg);
+  menuTransformer(pathArg, menuName);
 }
 
 function componentHandler(fileName, componentOptions) {
   fileName = toUpperCaseFirstWord(fileName);
   const { basic, business } = componentOptions;
-  if (basic) {
-    generateComponentBasic(fileName);
-  } else if (business) {
-    generateComponentBusiness(fileName);
+  const isPageComponent = !basic & !business; //不是在 src/components 生成组件，而是在普通页面文件生成组件
+  if (isPageComponent) {
+    console.log('生成页面组件');
+    generateComponentPage(fileName);
+  } else {
+    if (!process.cwd().endsWith('/src')) {
+      error('请在项目的 src 目录下运行！');
+    }
+    if (basic) {
+      generateComponentBasic(fileName);
+    } else if (business) {
+      generateComponentBusiness(fileName);
+    }
   }
 }
 
 function generate(options, actionName, fileName, menuName) {
-  validate([
-    {
-      fn: () => !process.cwd().endsWith('/src'),
-      message: '请在项目的 src 目录下运行！',
-    },
-    {
-      fn: () => fileName.includes('-'),
-      message: 'pages下文件必须以首字母大写+驼峰命名！',
-    },
-  ])(() => {
-    switch (actionName) {
-      case 'page':
-      case 'p':
-        pageHandler(fileName, menuName);
-        break;
+  switch (actionName) {
+    case 'page':
+    case 'p':
+      if (!process.cwd().endsWith('/src')) {
+        error('请在项目的 src 目录下运行！');
+      }
+      if (fileName.includes('-')) {
+        error('pages下文件必须以首字母大写+驼峰命名！');
+      }
+      if (!fileName.includes('/')) {
+        error(
+          '目前新建页面必须指定父级目录，以 / 分割 ,例如 parentDirectory/childDirectory'
+        );
+      }
+      if (!menuName) {
+        console.error(
+          '请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页'
+        );
+        menuName = '请指定菜单名';
+      }
 
-      case 'component':
-      case 'c':
-        componentHandler(fileName, options);
-        break;
+      pageHandler(fileName, menuName);
+      break;
 
-      default:
-        break;
-    }
-  });
+    case 'component':
+    case 'c':
+      componentHandler(fileName, options);
+      break;
+
+    default:
+      break;
+  }
 }
 
 function initCommandGenerate(program) {

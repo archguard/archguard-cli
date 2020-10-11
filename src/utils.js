@@ -120,7 +120,12 @@ async function dirExists(dir) {
   return mkdirStatus;
 }
 
+function error(message) {
+  throw new Error(message);
+}
+
 module.exports = {
+  error,
   getSplitString,
   toUpperCaseFirstWord,
   validate,
