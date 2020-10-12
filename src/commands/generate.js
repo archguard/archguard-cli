@@ -92,7 +92,6 @@ function initCommandGenerate(program) {
     .option('-ba, --basic', '创建 basic components')
     .option('-bu, --business', '创建 business components')
     .action((options) => {
-      console.log(111111111);
       generate(options, ...process.argv.slice(3));
     });
 }
