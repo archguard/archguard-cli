@@ -7,7 +7,6 @@ const { generatePage } = require('../generators/page');
 const menuTransformer = require('../transformer/menu');
 const routerTransformer = require('../transformer/router');
 const {
-  validate,
   getSplitString,
   formatFileName,
   toUpperCaseFirstWord,
@@ -34,7 +33,6 @@ function componentHandler(fileName, componentOptions) {
   const { basic, business } = componentOptions;
   const isPageComponent = !basic & !business; //不是在 src/components 生成组件，而是在普通页面文件生成组件
   if (isPageComponent) {
-    console.log('生成页面组件');
     generateComponentPage(fileName);
   } else {
     if (!process.cwd().endsWith('src')) {
@@ -64,10 +62,7 @@ function generate(options, actionName, fileName, menuName) {
         );
       }
       if (!menuName) {
-        console.error(
-          '请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页'
-        );
-        menuName = '请指定菜单名';
+        error('请设置最后一个参数为菜单名 例如： ag g page xxx/xxx2 首页');
       }
 
       pageHandler(fileName, menuName);
