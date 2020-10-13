@@ -2,12 +2,12 @@ const program = require('commander');
 const { version } = require('./constants');
 const initCommandGenerate = require('./commands/generate');
 const initCommandHelp = require('./commands/help');
-const initCommandTest = require('./commands/test');
+const initCommandUpdate = require('./commands/update');
 
 function initCommand() {
   initCommandGenerate(program);
   initCommandHelp(program);
-  initCommandTest(program);
+  initCommandUpdate(program);
 }
 
 initCommand();
