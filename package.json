@@ -1,5 +1,5 @@
 {
-  "name": "arch-guard-cli",
+  "name": "@archguard/cli",
   "version": "0.0.14",
   "description": "archGuard架构守护项目前端脚手架",
   "main": "index.js",
